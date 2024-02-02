@@ -49,7 +49,7 @@ public class Resolucao {
         } else return false;
     }
 
-    public void imprimeLetreiroSemQuebra() {
+    public void imprimeLetreiroComQuebra() {
         Boolean quebraTexto = verificaQuebratexto();
         String letreiro;
         int ultimoCaracterPossivel = calculaEspacoImprimivel();
@@ -59,7 +59,7 @@ public class Resolucao {
                     + constroiMargemHorizontal() + "#";
             System.out.println(letreiro);
             i = ultimoCaracterPossivel;
-            ultimoCaracterPossivel *= 2;
+            ultimoCaracterPossivel  += calculaEspacoImprimivel();
             if (i >= texto.length()) {
                 quebraTexto = false;
             }
@@ -71,26 +71,53 @@ public class Resolucao {
                 + constroiMargemHorizontal() + "#");
     }
 
-    public int calculaRestanteCaracteres() {
-        return texto.length() /calculaEspacoImprimivel();
+    public int encontraIndexRestanteCaracteres() {
+        boolean encontrouFim = false;
+        int indexQuebra = 0;
+        while (!encontrouFim) {
+            if (indexQuebra > texto.length()) {
+                encontrouFim = true;
+            } else {
+                indexQuebra += calculaEspacoImprimivel();
+            }
+        }
+        return indexQuebra - calculaEspacoImprimivel();
     }
 
+    private int calculaEspacosFaltantes() {
+        return calculaEspacoImprimivel() - texto.substring(encontraIndexRestanteCaracteres(), texto.length()).length();
+    }
 
+    private String constroiEspacosFaltantes() {
+        String espacosFaltantes = "";
+        for (int i = 0; i < calculaEspacosFaltantes(); i++) {
+            espacosFaltantes = espacosFaltantes + " ";
+        }
+        return espacosFaltantes;
+    }
 
-
+    private void imprimeLetreiroSemQuebra() {
+        //fazer com que imprima a linha 4
+        System.out.println("#" + constroiMargemHorizontal() + texto.substring(encontraIndexRestanteCaracteres(), texto.length())
+                + constroiEspacosFaltantes() + constroiMargemHorizontal() + "#");
+    }
 
     public void junta() {
         System.out.println(constroiLinhaHorizontal());
         System.out.println(constroiMargemVertical());
-        if (texto.length() % calculaEspacoImprimivel() == 0) {
+        if (texto.length() % calculaEspacoImprimivel() == 0 && texto.length() > calculaEspacoImprimivel()) {
+            imprimeLetreiroComQuebra();
+        } else if (texto.length() <= calculaEspacoImprimivel()) {
+            imprimeLetreiroNaMesmaLinha();
+        } else {
             imprimeLetreiroSemQuebra();
         }
-        if (texto.length() <= calculaEspacoImprimivel()) {
-            imprimeLetreiroNaMesmaLinha();
-        }
+
         System.out.println(constroiMargemVertical());
         System.out.println(constroiLinhaHorizontal());
     }
+
+
 
 
 }
