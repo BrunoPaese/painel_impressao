@@ -6,3 +6,9 @@ x--sjdhalks     --x
 x--             --x
 x--             --x
 xxxxxxxxxxxxxxxxxxx
+
+margem = 2 
+    "--" representa margens laterais
+    em branco margem superior e inferior
+largura = 19
+texto = "sjdhalksjdaaksjdhalks"
