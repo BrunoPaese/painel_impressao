@@ -31,6 +31,12 @@ public class Resolucao {
         return "#" + espacosEmBranco + "#";
     }
 
+    public void imprimeMargemVertical() {
+        for (int i = 0; i < margem; i++) {
+            System.out.println(constroiMargemVertical());
+        }
+    }
+
     public String constroiMargemHorizontal() {
         String margemVertical = "";
         for (int i = 0; i < margem; i++) {
@@ -97,14 +103,27 @@ public class Resolucao {
     }
 
     private void imprimeLetreiroSemQuebra() {
-        //fazer com que imprima a linha 4
-        System.out.println("#" + constroiMargemHorizontal() + texto.substring(encontraIndexRestanteCaracteres(), texto.length())
-                + constroiEspacosFaltantes() + constroiMargemHorizontal() + "#");
+        Boolean quebraTexto = verificaQuebratexto();
+        String letreiro;
+        int ultimoCaracterPossivel = calculaEspacoImprimivel();
+        int i = 0;
+        while (quebraTexto) {
+            letreiro = "#" + constroiMargemHorizontal() + texto.substring(i, ultimoCaracterPossivel)
+                    + constroiMargemHorizontal() + "#";
+            System.out.println(letreiro);
+            i = ultimoCaracterPossivel;
+            ultimoCaracterPossivel += calculaEspacoImprimivel();
+            if (ultimoCaracterPossivel > texto.length()) {
+                quebraTexto = false;
+            }
+        }
+        System.out.println("#" + constroiMargemHorizontal() + texto.substring(encontraIndexRestanteCaracteres(),
+                texto.length()) + constroiEspacosFaltantes() + constroiMargemHorizontal() + "#");
     }
 
-    public void junta() {
+    public void imprimePainel() {
         System.out.println(constroiLinhaHorizontal());
-        System.out.println(constroiMargemVertical());
+        imprimeMargemVertical();
         if (texto.length() % calculaEspacoImprimivel() == 0 && texto.length() > calculaEspacoImprimivel()) {
             imprimeLetreiroComQuebra();
         } else if (texto.length() <= calculaEspacoImprimivel()) {
@@ -112,8 +131,7 @@ public class Resolucao {
         } else {
             imprimeLetreiroSemQuebra();
         }
-
-        System.out.println(constroiMargemVertical());
+        imprimeMargemVertical();
         System.out.println(constroiLinhaHorizontal());
     }
 
